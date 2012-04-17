@@ -1,17 +1,9 @@
 <html>
 	
-	<?php 
-
-	$bookmarklet_url = $_GET['url']
-	$bookmarklet_name = $_GET['name']
-
-
-	?>
-
 	<head>
 	
 		<style type="text/css">
-			.bookmarklet {
+			.button {
 				min-height: 100px;
 				min-weight: 100px;
 				padding: 10px 10px;
@@ -22,7 +14,7 @@
 				border-radius: 30px;
 			}
 			
-			.button {
+			.content {
 				background-color: #DAECF6;
 				border-color: #C4DDEF;
 				border-style: solid;
@@ -30,6 +22,10 @@
 				width: auto;
 				margin: 20px 10px 20px 20px;
 				padding: 20px 10px 20px 20px;
+			}
+			
+			.bookmarklet {
+				margin-bottom: 20px;
 			}
 			
 			a:visited {
@@ -46,21 +42,26 @@
 	</head>
 
 	<body>
-		<div class="button">
-			<a class="bookmarklet" href="javascript:var script = document.createElement('script');
-					 script.src = '<?php echo $_GET['url'] ?>';
-					 script.type = 'text/javascript';
-					 document.getElementsByTagName('head')[0].appendChild(script);
-					 void(0);"><?php echo $_GET['name'] ?>BOOKMARKLET</a>
-			<span> &lt;-------- DRAG THIS LINK AND MOVE IT TO YOUR BOOKMARK BAR </span>
+		<div class="content">
+			<?php if(isset($_GET['url'])): ?>
+				<div class="bookmarklet">
+					<a class="button" href="javascript:var script = document.createElement('script');
+							 script.src = '<?php echo $_GET['url'] ?>';
+							 script.type = 'text/javascript';
+							 document.getElementsByTagName('head')[0].appendChild(script);
+							 void(0);"><?php if (isset($_GET['name'])) echo $_GET['name']; else echo $_GET['name']; ?></a>
+					<span> &lt;-------- DRAG THIS LINK AND MOVE IT TO YOUR BOOKMARK BAR </span>
+				</div>
+			<?php endif; ?>
 			<div>
-				<?php if(empty($bookmarklet_url)): ?>
+				<?php if(isset($_GET['url'])): ?>
 					Note: This bookmarklet inject in your page script from <?php echo $_GET['url'] ?>
 				<?php else: ?>
-					Create inject bookmarklet link from this url:
-					<form action='get'>
-						Url of script to be injected by click on bookmarklet: <input type='text' name='url'>
-						Bookmarklet name (optional) : <input type='text' name='name'>
+					Use this form to create injecting bookmarklet
+					<form id="form" method='get'>
+						<div>Url of script to be injected by click on bookmarklet: <input id='urlRawText' name='url' type='text'></div>
+						<div>Bookmarklet name (optional) : <input type='text' name='name'></div>
+						<div><input id="submitButton" type="submit" value="bookmarklet it!"></div>
 					</form>
 				<?php endif; ?>
 			</div>
